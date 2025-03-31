@@ -339,10 +339,7 @@ function updateChartData(data, timestamp, batteryPercentage) {
     // Update Pollen Chart
     if (data.power) {
         pollenChart.data.labels.push(now);
-        pollenChart.data.datasets[0].data.push(data.power.Vsol / 1000);
-        pollenhart.data.datasets[1].data.push(data.power.Isol);
-        pollenhart.data.datasets[2].data.push(data.power.Vbat / 1000);
-        pollenChart.data.datasets[3].data.push(data.power.Ibat);
+        // pollenChart.data.datasets[0].data.push(data.power.pollen ?? null);
 
         if (pollenChart.data.labels.length > 100) {
             pollenChart.data.labels.shift();
@@ -367,9 +364,6 @@ function exportPollenData() {
             pollenChart.data.datasets[1].data[i]?.toFixed(0) || '',
             pollenChart.data.datasets[2].data[i]?.toFixed(2) || '',
             pollenChart.data.datasets[3].data[i]?.toFixed(0) || '',
-            batteryChart.data.datasets[0].data[i]?.toFixed(0) || '',
-            batteryChart.data.datasets[1].data[i],
-            batteryChart.data.datasets[2].data[i],
         ];
         csvRows.push(row.join(','));
     });
