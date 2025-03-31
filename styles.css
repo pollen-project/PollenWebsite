@@ -200,7 +200,7 @@ h1, h2, p {
     font-size: 1rem;
     font-weight: bold;
     color: #ffffff;
-    background: linear-gradient(135deg, #2f80ed, #56ccf2);
+    background: linear-gradient(135deg, #5c6f91, #4a5a78);
     border: none;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -226,7 +226,7 @@ h1, h2, p {
     font-size: 1rem;
     font-weight: bold;
     color: #ffffff;
-    background: linear-gradient(135deg, #2f80ed, #56ccf2);
+    background: linear-gradient(135deg, #5c6f91, #4a5a78);
     border: none;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -265,7 +265,7 @@ footer {
 }
 
 footer a {
-    color: #a4fba6;
+    color: #739dff;
     text-decoration: none;
 }
 
