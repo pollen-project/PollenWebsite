@@ -122,8 +122,6 @@ function updateDashboard(data) {
     if (data.dht22) {
         document.getElementById('temp1').textContent = data.dht22[0]?.t?.toFixed(1) || '--'; 
         document.getElementById('humidity1').textContent = data.dht22[0]?.rh?.toFixed(1) || '--';
-        document.getElementById('temp2').textContent = data.dht22[1]?.t?.toFixed(1) || '--'; 
-        document.getElementById('humidity2').textContent = data.dht22[1]?.rh?.toFixed(1) || '--'; 
     }
 
     // Update GPS data
@@ -194,7 +192,7 @@ const pollenChart = new Chart(pollenCtx, {
                 borderColor: 'rgba(255, 165, 0, 1)',
                 borderWidth: 2,
                 fill: false,
-                yAxisID: 'y-voltage',
+                yAxisID: 'y-value',
             },
         ],
     },
@@ -209,8 +207,7 @@ const pollenChart = new Chart(pollenCtx, {
             legend: {
                 position: 'top',
                 labels: {
-                    font: { size: 14 },
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    font: { size: 14 }, color: 'rgba(255, 255, 255, 0.8)',
                 },
             },
         },
@@ -222,10 +219,21 @@ const pollenChart = new Chart(pollenCtx, {
             'y-value': {
                 type: 'linear',
                 position: 'left',
-                title: { display: true, text: 'value', color: '#ffffff' },
-                ticks: { color: '#ffffff' },
-            },
-        },
+                title: {
+                    display: true,
+                    text: 'Value',
+                    color: '#ffffff',
+                    font: { size: 14 }
+                },
+                ticks: {
+                    color: '#ffffff',
+                    font: { size: 12 }
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)' // Optional: softer gridlines
+                }
+            }
+        }
     },
 });
 
@@ -241,7 +249,7 @@ const sensorChart = new Chart(ctx, {
             {
                 label: 'Box Temperature (°C)',
                 data: [],
-                borderColor: 'rgba(86, 204, 242, 1)',
+                borderColor: 'rgb(51, 255, 129)',
                 borderWidth: 2,
                 fill: false,
                 yAxisID: 'y-temp',
@@ -249,23 +257,7 @@ const sensorChart = new Chart(ctx, {
             {
                 label: 'Box Humidity (%)',
                 data: [],
-                borderColor: 'rgba(242, 204, 86, 1)',
-                borderWidth: 2,
-                fill: false,
-                yAxisID: 'y-humidity',
-            },
-            {
-                label: 'Outside Temperature (°C)',
-                data: [],
-                borderColor: 'rgba(86, 255, 86, 1)',
-                borderWidth: 2,
-                fill: false,
-                yAxisID: 'y-temp',
-            },
-            {
-                label: 'Outside Humidity (%)',
-                data: [],
-                borderColor: 'rgba(204, 86, 242, 1)',
+                borderColor: 'rgb(107, 85, 255)',
                 borderWidth: 2,
                 fill: false,
                 yAxisID: 'y-humidity',
@@ -316,17 +308,13 @@ function updateChartData(data, timestamp, batteryPercentage) {
     if (data.dht22) {
         const boxTemp = data.dht22[0]?.t ?? null;
         const boxHumidity = data.dht22[0]?.rh ?? null;
-        const outsideTemp = data.dht22[1]?.t ?? null;
-        const outsideHumidity = data.dht22[1]?.rh ?? null;
 
-        console.log("Sensor Data for Chart:", { boxTemp, boxHumidity, outsideTemp, outsideHumidity });
+        console.log("Sensor Data for Chart:", { boxTemp, boxHumidity});
 
         // Push data into the chart
         sensorChart.data.labels.push(now);
         sensorChart.data.datasets[0].data.push(boxTemp);
         sensorChart.data.datasets[1].data.push(boxHumidity);
-        sensorChart.data.datasets[2].data.push(outsideTemp);
-        sensorChart.data.datasets[3].data.push(outsideHumidity);
 
         // Maintain chart data limit
         if (sensorChart.data.labels.length > 100) {
@@ -378,7 +366,7 @@ function exportPollenData() {
 
 function exportSensorData() {
     const csvRows = [];
-    const headers = ['Time', 'Box Temperature (°C)', 'Box Humidity (%)', 'Outside Temperature (°C)', 'Outside Humidity (%)'];
+    const headers = ['Time', 'Box Temperature (°C)', 'Box Humidity (%)'];
     csvRows.push(headers.join(','));
 
     sensorChart.data.labels.forEach((label, i) => {
@@ -386,8 +374,6 @@ function exportSensorData() {
             label,
             sensorChart.data.datasets[0].data[i] || '',
             sensorChart.data.datasets[1].data[i] || '',
-            sensorChart.data.datasets[2].data[i] || '',
-            sensorChart.data.datasets[3].data[i] || '',
         ];
         csvRows.push(row.join(','));
     });
