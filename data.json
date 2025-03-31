@@ -10,15 +10,5 @@
         "speed": 0,
         "satellites_in_view": 8,
         "satellites_connected": 5
-    },
-    "power": {
-        "Vsol": "8.21",
-        "Isol": "781",
-        "Vbat": "4.12",
-        "Ibat": "176",
-        "batteryPercentage": "75",
-        "timeLeft": "3.50 hours (0.1 days)",
-        "isCharging": true,
-        "pgood": true
     }
 }

@@ -14,7 +14,7 @@
     <img src="Pollen_Logo.png" alt="Project Pollen Logo" class="logo-top-right" />
     <!-- Header -->
     <div class="header fade-in">
-        <h1>Data Hub</h1>
+        <h1>Pollen data Hub</h1>
         <p>Real-Time Data Monitoring</p>
         <p>Last update: <span id="dataTimestamp">--</span></p>
     </div>
@@ -23,6 +23,21 @@
     <div class="container">
         <!-- Cards -->
         <div class="grid">
+            <!-- Pollen Data Card -->
+            <div class="pollen-card">
+                <h2>Pollen Count 🌼</h2>
+                <div class="metric">
+                    <span id="pollen-count">--</span>
+                  </div>
+                <!-- Add ID for toggle button -->
+                <button id="togglePollenChart" class="toggle-button">Show/Hide Pollen chart</button>
+                <div class="chart-container" id="pollenChartContainer" style="display: none;">
+                    <h3 style="text-align: center;">Historical Data for Pollen</h3>
+                    <canvas id="pollenChart"></canvas>
+                    <button id="exportPollenDataButton" class="export-button">Export Pollen Data to CSV</button>
+                </div>
+            </div>
+
             <!-- Sensor Data Card -->
             <div class="card">
                 <h2>Sensor Data 🌤️</h2>
@@ -39,42 +54,6 @@
                     <h3 style="text-align: center;">Historical Data for Temperature & Humidity</h3>
                     <canvas id="sensorChart"></canvas>
                     <button id="exportDataButton" class="export-button">Export Data to CSV</button>
-                </div>
-            </div>
-
-            <!-- Power Data Card -->
-            <div class="power-card">
-                <h2>Power Data ⚡️</h2>
-                <div class="power-grid">
-                    <p>Solar Voltage: <span id="vsol">--</span> V</p>
-                    <p>Solar Current: <span id="isol">--</span> mA</p>
-                    <p>Battery Voltage: <span id="vbat">--</span> V</p>
-                    <p>Battery Current: <span id="ibat">--</span> mA</p>
-                </div>
-                <!-- Add ID for toggle button -->
-                <button id="togglePowerChart" class="toggle-button">Show/Hide Power Chart</button>
-                <div class="chart-container" id="powerChartContainer" style="display: none;">
-                    <h3 style="text-align: center;">Historical Data for Power</h3>
-                    <canvas id="powerChart"></canvas>
-                    <button id="exportPowerDataButton" class="export-button">Export Power Data to CSV</button>
-                </div>
-            </div>
-
-            <!-- Battery Data Card -->
-            <div class="battery-card">
-                <h2>Battery Data 🔋</h2>
-                <div class="battery-grid">
-                    <p>Battery Percentage: <span id="battery-percentage">--</span> %</p>
-                    <p>Time Left: <span id="time-left">--</span></p>
-                    <p class="is-charging">Is Charging: <span id="isCharging">🔴</span></p>
-                    <p class="pgood">PGood: <span id="pgood">🔴</span></p>
-                </div>
-                <!-- Add ID for toggle button -->
-                <button id="toggleBatteryChart" class="toggle-button">Show/Hide Battery Chart</button>
-                <div class="chart-container" id="batteryChartContainer" style="display: none;">
-                    <h3 style="text-align: center;">Historical Data for Battery</h3>
-                    <canvas id="batteryChart"></canvas>
-                    <button id="exportBatteryDataButton" class="export-button">Export Battery Data to CSV</button>
                 </div>
             </div>
 
@@ -100,10 +79,16 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Data Hub. Built with 💚 by 
+        <p>&copy; 2025 Pollen Data Hub. Built with 💚 by 
             <a href="https://www.linkedin.com/in/maurits-puggaard-4095351b0/" target="_blank">Maurits Puggaard</a> 
-            & 
+            ,
             <a href="https://www.linkedin.com/in/botond-horvath/" target="_blank">Botond Horváth</a>.
+            ,
+            <a href="https://www.linkedin.com/in/magnus-hartø-trojahn-20185a149/" target="_blank">Magnus Trojahn</a>.
+            ,
+            <a href="https://www.linkedin.com/in/mjørgensen/" target="_blank">Martin Jørgensen</a>.
+            &
+            <a href="https://www.linkedin.com/in/marcus-stjernø-367b28193/" target="_blank">Marcus Stjernø</a>.
         </p>
     </footer>
 

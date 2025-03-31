@@ -5,7 +5,7 @@
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #a7ff6d, #2f80ed, #378456, #56ab2f);
+    background: linear-gradient(135deg, #1f1f2e, #2c3e50, #34495e, #2c5364);
     background-size: 400% 400%;
     animation: backgroundMove 10s infinite alternate;
     color: #fff;
@@ -81,7 +81,7 @@ h1, h2, p {
 /* ===========================
    Card Styles
    =========================== */
-.card, .power-card, .gps-card, .battery-card  {
+.card, .pollen-card, .gps-card  {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -98,7 +98,7 @@ h1, h2, p {
     box-sizing: border-box;
 }
 
-.card h2, .power-card h2, .gps-card h2, .battery-card h2 {
+.card h2, .pollen-card h2, .gps-card h2 {
     font-size: 1.5rem;
     font-weight: bold;
     color: #ffffff;
@@ -123,10 +123,17 @@ h1, h2, p {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
+.metric {
+    font-size: 3rem; /* make it bigger */
+    font-weight: bold;
+    margin-top: 0.5rem;
+    color: #ffffff;
+  }
+
 /* ===========================
    Grid Layouts
    =========================== */
-.sensor-grid, .gps-grid, .power-grid, .battery-grid {
+.sensor-grid, .gps-grid, .power-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
@@ -134,7 +141,7 @@ h1, h2, p {
     margin-bottom: 15px;
 }
 
-.sensor-grid p, .gps-grid p, .power-grid p, .battery-grid p {
+.sensor-grid p, .gps-grid p, .power-grid p{
     font-size: 1.1rem;
     line-height: 1.6;
     color: #f9f9f9;
@@ -177,7 +184,7 @@ h1, h2, p {
     text-align: center;
 }
 
-.card #sensorChart, .power-card #powerChart {
+.card #sensorChart, .pollen-card #pollenChart {
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
@@ -296,7 +303,7 @@ footer a:hover {
         margin-bottom: 20px;
     }
 
-    .card #sensorChart, .power-card #powerChart {
+    .card #sensorChart, .pollen-card #pollenChart {
         height: 300px;
     }
 }
@@ -306,7 +313,7 @@ footer a:hover {
         zoom: 0.6;
     }
 
-    .card #sensorChart, .power-card #powerChart {
+    .card #sensorChart, .pollen-card #pollenChart {
         height: 250px;
     }
 }
