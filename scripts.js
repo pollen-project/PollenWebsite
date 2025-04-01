@@ -1,6 +1,7 @@
 // ======================
 // Map Initialization
 // ======================
+
 const map = L.map('map').setView([0, 0], 13);
 const marker = L.marker([0, 0]).addTo(map);
 
@@ -11,12 +12,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // ======================
 // GPS Setup
 // ======================
+
 const gps = new GPS();
 let satellitesConnected = 0; // Track connected satellites
 
 // ======================
 // MQTT Client Setup
 // ======================
+
 const brokerURL = "wss://mqtt.eclipseprojects.io/mqtt";
 const topic = "/pollen";
 const client = mqtt.connect(brokerURL);
@@ -51,6 +54,7 @@ client.on("message", (topic, message) => {
 // ======================
 // Load Stored Data
 // ======================
+
 const apiUrl = "https://pollen.botondhorvath.com/api"
 
 async function getDevice() {
@@ -105,6 +109,7 @@ async function loadData() {
 // ======================
 // Dashboard Update
 // ======================
+
 let lastIbatUpdateTime = Date.now(); // Keep track of the last time Ibat was updated
 
 function updateDashboard(data) {
@@ -180,6 +185,7 @@ function updateDashboard(data) {
 // ======================
 // Pollen Chart Initialization
 // ======================
+
 const pollenCtx = document.getElementById('pollenChart').getContext('2d');
 const pollenChart = new Chart(pollenCtx, {
     type: 'line',
@@ -240,6 +246,7 @@ const pollenChart = new Chart(pollenCtx, {
 // ======================
 // Sensor Chart Initialization
 // ======================
+
 const ctx = document.getElementById('sensorChart').getContext('2d');
 const sensorChart = new Chart(ctx, {
     type: 'line',
@@ -301,6 +308,7 @@ const sensorChart = new Chart(ctx, {
 // ======================
 // Chart Data Update
 // ======================
+
 function updateChartData(data, timestamp, batteryPercentage) {
     const now = timestamp ?? new Date().toLocaleTimeString();
 
@@ -340,6 +348,7 @@ function updateChartData(data, timestamp, batteryPercentage) {
 // ======================
 // Export to CSV
 // ======================
+
 function exportPollenData() {
     const csvRows = [];
     const headers = [''];
@@ -389,6 +398,7 @@ function exportSensorData() {
 // ======================
 // Toggle Chart Visibility
 // ======================
+
 function toggleChart(chartContainerId) {
     const chartContainer = document.getElementById(chartContainerId);
     if (chartContainer) {
@@ -426,9 +436,11 @@ function toggleChartWithResize(chartContainerId) {
 // ======================
 // Attach Events to Buttons
 // ======================
+
+// Export toggle button handlers
 document.getElementById('exportDataButton').addEventListener('click', exportSensorData);
 document.getElementById('exportPollenDataButton').addEventListener('click', exportPollenData);
 
-// Add toggle button handlers
+// Toggle button handlers
 document.getElementById('toggleSensorChart').addEventListener('click', () => toggleChartWithResize('sensorChartContainer'));
 document.getElementById('togglePollenChart').addEventListener('click', () => toggleChartWithResize('pollenChartContainer'));
