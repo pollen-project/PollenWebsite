@@ -321,7 +321,7 @@ function updateChartData(data, timestamp, batteryPercentage) {
 }
 
 function pollLocalDHT22() {
-    fetch("https://pollen.botondhorvath.com/api/get_dht")
+    fetch("http://pollen3.local:8080/api/get_dht")
         .then((res) => res.json())
         .then((data) => {
             const temperature = data.temperature ?? null;
