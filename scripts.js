@@ -176,40 +176,6 @@ function updateDashboard(data) {
     }
 }
 
-function pollLocalDHT22() {
-    fetch("http://pollen3:8080/get_dht")
-        .then((res) => res.json())
-        .then((data) => {
-            const temperature = data.temperature ?? null;
-            const humidity = data.humidity ?? null;
-
-            if (temperature !== null) {
-                document.getElementById('temp1').textContent = temperature.toFixed(1);
-            }
-            if (humidity !== null) {
-                document.getElementById('humidity1').textContent = humidity.toFixed(1);
-            }
-
-            const now = new Date().toLocaleTimeString();
-            sensorChart.data.labels.push(now);
-            sensorChart.data.datasets[0].data.push(temperature);
-            sensorChart.data.datasets[1].data.push(humidity);
-
-            if (sensorChart.data.labels.length > 100) {
-                sensorChart.data.labels.shift();
-                sensorChart.data.datasets.forEach((dataset) => dataset.data.shift());
-            }
-
-            sensorChart.update();
-        })
-        .catch((err) => {
-            console.warn("Failed to fetch DHT22 data:", err);
-        });
-}
-// Poll every 15 seconds
-setInterval(pollLocalDHT22, 15000);
-pollLocalDHT22(); // Initial fetch on load
-
 
 // ======================
 // Pollen Chart Initialization
