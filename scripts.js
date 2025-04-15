@@ -123,12 +123,6 @@ function updateDashboard(data) {
     timestampText += timestampDate.toLocaleTimeString();
     document.getElementById('dataTimestamp').textContent = timestampText;
 
-    // Update sensor data
-    if (data.dht22) {
-        document.getElementById('temp1').textContent = data.dht22[0]?.t?.toFixed(1) || '--'; 
-        document.getElementById('humidity1').textContent = data.dht22[0]?.rh?.toFixed(1) || '--';
-    }
-
     // Update GPS data
     if (data.gps) {
         const gpsString = data.gps;
@@ -181,6 +175,41 @@ function updateDashboard(data) {
         }
     }
 }
+
+function pollLocalDHT22() {
+    fetch("http://pollen3:8080/get_dht")
+        .then((res) => res.json())
+        .then((data) => {
+            const temperature = data.temperature ?? null;
+            const humidity = data.humidity ?? null;
+
+            if (temperature !== null) {
+                document.getElementById('temp1').textContent = temperature.toFixed(1);
+            }
+            if (humidity !== null) {
+                document.getElementById('humidity1').textContent = humidity.toFixed(1);
+            }
+
+            const now = new Date().toLocaleTimeString();
+            sensorChart.data.labels.push(now);
+            sensorChart.data.datasets[0].data.push(temperature);
+            sensorChart.data.datasets[1].data.push(humidity);
+
+            if (sensorChart.data.labels.length > 100) {
+                sensorChart.data.labels.shift();
+                sensorChart.data.datasets.forEach((dataset) => dataset.data.shift());
+            }
+
+            sensorChart.update();
+        })
+        .catch((err) => {
+            console.warn("Failed to fetch DHT22 data:", err);
+        });
+}
+// Poll every 15 seconds
+setInterval(pollLocalDHT22, 15000);
+pollLocalDHT22(); // Initial fetch on load
+
 
 // ======================
 // Pollen Chart Initialization
@@ -312,26 +341,6 @@ const sensorChart = new Chart(ctx, {
 function updateChartData(data, timestamp, batteryPercentage) {
     const now = timestamp ?? new Date().toLocaleTimeString();
 
-    // Update Sensor Chart
-    if (data.dht22) {
-        const boxTemp = data.dht22[0]?.t ?? null;
-        const boxHumidity = data.dht22[0]?.rh ?? null;
-
-        console.log("Sensor Data for Chart:", { boxTemp, boxHumidity});
-
-        // Push data into the chart
-        sensorChart.data.labels.push(now);
-        sensorChart.data.datasets[0].data.push(boxTemp);
-        sensorChart.data.datasets[1].data.push(boxHumidity);
-
-        // Maintain chart data limit
-        if (sensorChart.data.labels.length > 100) {
-            sensorChart.data.labels.shift(); // Remove oldest label
-            sensorChart.data.datasets.forEach(dataset => dataset.data.shift()); // Remove corresponding data
-        }
-        sensorChart.update(); // Refresh the chart
-    }
-
     // Update Pollen Chart
     if (data.power) {
         pollenChart.data.labels.push(now);
@@ -351,16 +360,14 @@ function updateChartData(data, timestamp, batteryPercentage) {
 
 function exportPollenData() {
     const csvRows = [];
-    const headers = [''];
+    const headers = ['Time', 'Pollen Count'];
     csvRows.push(headers.join(','));
 
     pollenChart.data.labels.forEach((label, i) => {
+        const pollenValue = pollenChart.data.datasets[0].data[i];
         const row = [
             label,
-            pollenChart.data.datasets[0].data[i]?.toFixed(2) || '',
-            pollenChart.data.datasets[1].data[i]?.toFixed(0) || '',
-            pollenChart.data.datasets[2].data[i]?.toFixed(2) || '',
-            pollenChart.data.datasets[3].data[i]?.toFixed(0) || '',
+            pollenValue !== undefined ? pollenValue.toFixed(2) : ''
         ];
         csvRows.push(row.join(','));
     });
