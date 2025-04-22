@@ -359,47 +359,36 @@ pollLocalDHT22(); // Initial fetch on load
 // Export to CSV
 // ======================
 
-function exportPollenData() {
+function exportCombinedData() {
     const csvRows = [];
-    const headers = ['Time', 'Pollen Count'];
+    const headers = ['Time', 'Pollen Count', 'Box Temperature (°C)', 'Box Humidity (%)'];
     csvRows.push(headers.join(','));
 
-    pollenChart.data.labels.forEach((label, i) => {
-        const pollenValue = pollenChart.data.datasets[0].data[i];
+    const pollenLabels = pollenChart.data.labels;
+    const sensorLabels = sensorChart.data.labels;
+
+    const maxLength = Math.max(pollenLabels.length, sensorLabels.length);
+
+    for (let i = 0; i < maxLength; i++) {
+        const time = pollenLabels[i] || sensorLabels[i] || '';
+        const pollen = pollenChart.data.datasets[0].data[i];
+        const temp = sensorChart.data.datasets[0].data[i];
+        const humidity = sensorChart.data.datasets[1].data[i];
+
         const row = [
-            label,
-            pollenValue !== undefined ? pollenValue.toFixed(2) : ''
+            time,
+            pollen !== undefined ? pollen.toFixed(2) : '',                  // Put in value we are using
+            temp !== undefined ? temp : '',                                 // Put in value we are using
+            humidity !== undefined ? humidity : '',                         // Put in value we are using
         ];
         csvRows.push(row.join(','));
-    });
+    }
 
     const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'pollen_data.csv';
-    link.click();
-}
-
-function exportSensorData() {
-    const csvRows = [];
-    const headers = ['Time', 'Box Temperature (°C)', 'Box Humidity (%)'];
-    csvRows.push(headers.join(','));
-
-    sensorChart.data.labels.forEach((label, i) => {
-        const row = [
-            label,
-            sensorChart.data.datasets[0].data[i] || '',
-            sensorChart.data.datasets[1].data[i] || '',
-        ];
-        csvRows.push(row.join(','));
-    });
-
-    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'sensor_data.csv';
+    link.download = 'combined_data.csv';
     link.click();
 }
 
@@ -446,8 +435,8 @@ function toggleChartWithResize(chartContainerId) {
 // ======================
 
 // Export toggle button handlers
-document.getElementById('exportDataButton').addEventListener('click', exportSensorData);
-document.getElementById('exportPollenDataButton').addEventListener('click', exportPollenData);
+document.getElementById('exportDataButton').addEventListener('click', exportCombinedData);
+document.getElementById('exportPollenDataButton').addEventListener('click', exportCombinedData);
 
 // Toggle button handlers
 document.getElementById('toggleSensorChart').addEventListener('click', () => toggleChartWithResize('sensorChartContainer'));
